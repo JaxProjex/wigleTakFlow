@@ -11,7 +11,7 @@
         "id": "2f2a6e6e0ee881cc",
         "type": "http request",
         "z": "039de8c509054630",
-        "name": "wigleWifi",
+        "name": "http req",
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -27,7 +27,7 @@
                 "keyType": "Authorization",
                 "keyValue": "",
                 "valueType": "other",
-                "valueValue": "\"Basic Pd82k4FaPwV924Dpq7Coa9TaQWUIS5vo0EQc1NDg6OW2mAp02D9wec7e2WkO92azU5OT=\""
+                "valueValue": "\"Basic QUlEOTBkM5Bi2SwPoe4wa27JS5vo0EQc1NDg6OWIwY1aWr42a8IpfTwER4H75OTc=\""
             }
         ],
         "x": 1100,
@@ -74,9 +74,7 @@
         "x": 300,
         "y": 240,
         "wires": [
-            [
-                "3b883c904c42322a"
-            ]
+            []
         ]
     },
     {
@@ -101,7 +99,7 @@
         "type": "function",
         "z": "039de8c509054630",
         "name": "filter data cellular",
-        "func": "var callsign = msg.payload.event.detail.contact._attributes.callsign;\nif (callsign === \"Cellular\" || callsign === \"CELLULAR\" || callsign === \"cellular\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n\n    msg.payload = {\n        \"lat1\": lat[0],\n        \"lat2\": lat[3],\n        \"lon1\": lon[0],\n        \"lon2\": lon[3],\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n} else {\n    return null;\n};",
+        "func": "var callsign = msg.payload.event.detail.contact._attributes.callsign;\nif (callsign === \"Cellular\" || callsign === \"CELLULAR\" || callsign === \"cellular\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n\n    msg.payload = {\n        \"lat1\": String(parseFloat(lat[0])),\n        \"lat2\": String(parseFloat(lat[3])),\n        \"lon1\": String(parseFloat(lon[0])),\n        \"lon2\": String(parseFloat(lon[3])),\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n} else {\n    return null;\n};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -121,12 +119,12 @@
         "type": "debug",
         "z": "039de8c509054630",
         "name": "debug filter1",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
         "x": 1050,
@@ -171,10 +169,10 @@
         "id": "b8271e7ce1d88dc1",
         "type": "comment",
         "z": "039de8c509054630",
-        "name": "wigleTakFlow",
-        "info": "",
-        "x": 410,
-        "y": 180,
+        "name": "README",
+        "info": "README\n\nREQUIREMENTS:\n-Node-Red\n-node-red-contrib-tak https://github.com/snstac/node-red-contrib-tak\n-TAKServer (or Multicast supported devices)\n-WiGLE account to obtain an API Token https://www.wigle.net\n\n------------------------------\n\nSETUP NODE-RED:\n-https://nodered.org/docs/getting-started/\n-options include installing node-red on your local PC, a Raspberry Pi or similar single board computer or mini PC, deploying node-red on a cloud server or virtual private server (VPS), Docker Container, or local virtual environment. After installing node-red you should be able to go to the node-red dashboard at http://*nodeRedIPaddress:1880 you may have to open appropriate ports (1880) to allow devices to access the node-red dashboard.\n\n------------------------------\n\nIMPORT .JSON FLOW TO NODE RED:\n-in GitHub: click on \"wigleTakFlow.json\" > click on the download icon \"Download raw file\" > note where the \"wigleTakFlow.json\" file downloaded to, default is in your Downloads folder\n-in Node-Red: click on menu icon (3 horizontal lines top right) > click on \"Import\" > click on \"select a file to import\" > go to Downloads folder and click on \"wigleTakFlow.json\" > Upload > Import\n\nALTERNATIVELY..\n-you can just copy the whole \"wigleTakFlow.json\" code from GitHub and paste it into the Node-Red Import Clipboard.\n\n------------------------------\n\nCONFIGURE TAKSERVER:\n-TAKServer can be hosted on various platforms: Raspberry Pi, Mini PCs, your local PC, Cloud Servers or Virtual Private Servers (VPS), Docker Containers, or Virtual Environments. Regardless, if you're looking for instructions on setting up your TAKServer I recommend ATAKHQs guides https://www.atakhq.com/en/tak-server\n-Configuring the TCP (TAKServer) node in Node-Red wigleTakFlow, Input your TAKServer IP and Port, and checkbox whether you're using SSL/TLS or not. If you are using SSL/TLS, ensure you upload you TAKServer certificates and key that are located in the directory of your TAKServer that stores all client certificates/keys (ie: ubuntu docker container is \"/opt/tak/certs/files\"). I Suggest creating a TAK client \"node-red\" to be used specifically for Node-Reds handling of forwarding data to TAK. In your certificates file you will want to copy and upload \"node-red.pem\" as the \"Certificate\", \"node-red.key\" as the \"Private Key\" and \"ca.pem\" as the \"CA Certificate\" in the TLS Configuration Properties in the TCP (TAKServer) node in Node-Red. You will also need to enter the Passphrase for your TAKServer truststore, this can be found in your TAKServers CoreConfig.xml file. Default is \"atakatak\".\n\n------------------------------\n\nOBTAINING WIGLE API KEY:\n-register for a WiGLE account at https://wigle.net\n-navigate to WiGLEs API page for your account at https://wigle.net/account > Login > Show Token:\n-Encoded for use: \"Basic \" followed by this token will be copy pasted in the Authorization Header in Node-Red for both http req nodes in wigleTakFlow. The Authorization Header should look like \"Basic YOURTOKEN\" (quotation marks included).\n-API Name: this token will be copy pasted to the \"Username\" under \"basic authentication\" in Node-Red for both http req nodes in wigleTakFlow.\n-API Token: this token will be copy pasted to the \"Password\" under \"basic authentication\" in Node-Red for both http req nodes in wigleTakFlow.\n\n------------------------------\n\nUSING THE WIGLETAKFLOW:\n-once your TCP TAKServer node is connected and your WiGLE API tokens are entered (correctly), you're ready to start having your TAK devices get cell and wifi data.\n-in ATAK: Menu (3 horizontal lines) > Drawing Tools > *choose square > *tap your 3 points to create your box > *select center CoT marker of your box (default name is Rectangle 1) > *click bottom right waypoint/menu icon in radial menu > change shape name to: Cellular (to get cellular coverage) or change shape name to: Wifi (to get open WiFi APs) > Send > Broadcast > cellular or wifi data will return as CoT icons inside your square. In the remarks section of each CoT returned will be additional data on the cell tower or wifi AP.\n-in iTAK: Draw > *select polygon (the not circle shape) > select > *create a square around your area of interest > *change name to: Cellular (to get cellular coverage) or change shape name to: Wifi (to get open WiFi APs) > Share > Share with Contacts > Share With All >cellular or wifi data will return as CoT icons inside your square. In the remarks section of each CoT returned will be additional data on the cell tower or wifi AP.\n\n-------------------------------\n\nHOW THE WIGLETAKFLOW WORKS:\n-TCP (TAKServer) node sends CoT traffic to TAK node to turn into a readable JSON format\n-TAK node sends CoT as JSON to filter data node\n-filter data node constantly reads and waits til a CoT marker includes \"cellular\" or \"wifi\" as the callsign in which it grabs the plotted locations of the square shape as the maximum and minimum range to grab the wifi or cellular data for\n-http req nodes send a http GET to request of specific data from WiGLEs API depending on the callsign name\n-wigle json node formats a readable CoT to be passed to TAK node to turn into a XML CoT that TAK can understand\n-TAK turns the json data to CoT and pushes it via TCP (TAKServer) or UDP depending on what is chosen.\n",
+        "x": 520,
+        "y": 120,
         "wires": []
     },
     {
@@ -245,10 +243,10 @@
         "id": "786665e303d206f2",
         "type": "comment",
         "z": "039de8c509054630",
-        "name": "add user:pass and authorization header",
-        "info": "",
-        "x": 1090,
-        "y": 340,
+        "name": "configure both http req",
+        "info": "https://wigle.net/account\n\nusername = your API name\npassword = your API token\nauthorization header = \"Basic \" followed by your encoded for use token",
+        "x": 1100,
+        "y": 360,
         "wires": []
     },
     {
@@ -276,14 +274,14 @@
         "type": "function",
         "z": "039de8c509054630",
         "name": "filter data wifi",
-        "func": "var callsign = msg.payload.event.detail.contact._attributes.callsign;\nif (callsign === \"wifi\" || callsign === \"WIFI\" || callsign === \"Wifi\" || callsign === \"WiFi\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    //config parameters if needed\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n    var freenet = \"false\"; //only include wifi known free to public?\n\n    msg.payload = {\n        \"lat1\": lat[0],\n        \"lat2\": lat[3],\n        \"lon1\": lon[0],\n        \"lon2\": lon[3],\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n} else {\n    return null;\n};",
+        "func": "var callsign = msg.payload.event.detail.contact._attributes.callsign;\nif (callsign === \"wifi\" || callsign === \"WIFI\" || callsign === \"Wifi\" || callsign === \"WiFi\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    //config parameters if needed\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n    var freenet = \"false\"; //only include wifi known free to public?\n\n    msg.payload = {\n        \"lat1\": String(parseFloat(lat[0])),\n        \"lat2\": String(parseFloat(lat[3])),\n        \"lon1\": String(parseFloat(lon[0])),\n        \"lon2\": String(parseFloat(lon[3])),\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n} else {\n    return null;\n};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 830,
-        "y": 380,
+        "y": 420,
         "wires": [
             [
                 "a943f211596333a9",
@@ -295,7 +293,7 @@
         "id": "a943f211596333a9",
         "type": "http request",
         "z": "039de8c509054630",
-        "name": "wigleWifi",
+        "name": "http req",
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -311,11 +309,11 @@
                 "keyType": "Authorization",
                 "keyValue": "",
                 "valueType": "other",
-                "valueValue": "\"Basic Pd82k4FaPwV924Dpq7Coa9TaQWUIS5vo0EQc1NDg6OW2mAp02D9wec7e2WkO92azU5OTc=\""
+                "valueValue": "\"Basic QUlEOTBkM5Bi2SwPoe4wa27JS5vo0EQc1NDg6OWIwY1aWr42a8IpfTwER4H75OTc=\""
             }
         ],
         "x": 1100,
-        "y": 380,
+        "y": 420,
         "wires": [
             [
                 "63cf75369e67b6cc",
@@ -337,7 +335,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1270,
-        "y": 480,
+        "y": 520,
         "wires": []
     },
     {
@@ -352,7 +350,7 @@
         "finalize": "",
         "libs": [],
         "x": 1320,
-        "y": 380,
+        "y": 420,
         "wires": [
             [
                 "60c8901c9b15f387",
@@ -365,16 +363,16 @@
         "type": "debug",
         "z": "039de8c509054630",
         "name": "debug filter2",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
         "x": 1010,
-        "y": 480,
+        "y": 520,
         "wires": []
     },
     {
@@ -391,8 +389,47 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1510,
-        "y": 480,
+        "y": 520,
         "wires": []
+    },
+    {
+        "id": "a652c51409eef16d",
+        "type": "comment",
+        "z": "039de8c509054630",
+        "name": "configure TCP (TAKServer)",
+        "info": "if using SSL/TLS ensure you upload your certificates, key and input your passphrase.\nCertificates (.pem) and key (.key) can be found in your TAKServers directory where it stores all TAK client certificates.\nDefualt SSL/TLS port is 8089.\n",
+        "x": 310,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "d65d971abac0fcb8",
+        "type": "comment",
+        "z": "039de8c509054630",
+        "name": "configure TCP (TAKServer)",
+        "info": "if using SSL/TLS ensure you upload your certificates, key and input your passphrase.\nCertificates (.pem) and key (.key) can be found in your TAKServers directory where it stores all TAK client certificates.\nDefualt SSL/TLS port is 8089.\n",
+        "x": 1930,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "a47603aa4bd3be65",
+        "type": "udp in",
+        "z": "039de8c509054630",
+        "name": "",
+        "iface": "",
+        "port": "6969",
+        "ipv": "udp4",
+        "multicast": "true",
+        "group": "239.2.3.1",
+        "datatype": "utf8",
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "3b883c904c42322a"
+            ]
+        ]
     },
     {
         "id": "1c52b35895c06e7e",
