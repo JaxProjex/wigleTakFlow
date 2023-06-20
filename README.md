@@ -1,2 +1,2 @@
 # wigleTakFlow
-node red flow to forward cellular coverage from WiGLEs database to ATAK via multicast or TAKServer
+Node-Red Flow to forward cellular coverage or open WiFi APs from WiGLEs database to ATAK via multicast or TAKServer. (used in conjunction with Ampledatas node-red-contrib-tak).
