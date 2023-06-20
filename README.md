@@ -66,8 +66,8 @@ USING THE WIGLETAKFLOW:
 
 -in iTAK: Draw > *select polygon (the not circle shape) > select > *create a square around your area of interest > *change name to: Cellular (to get cellular coverage) or change shape name to: Wifi (to get open WiFi APs) > Share > Share with Contacts > Share With All >cellular or wifi data will return as CoT icons inside your square. In the remarks section of each CoT returned will be additional data on the cell tower or wifi AP.
 
-![itak](/itak1.png?raw=true "itak")
-![itak](/itak2.png?raw=true "itak")
+![itak](/itak1.PNG?raw=true "itak")
+![itak](/itak2.PNG?raw=true "itak")
 
 -------------------------------
 
