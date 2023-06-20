@@ -89,3 +89,11 @@ HOW THE WIGLETAKFLOW WORKS:
 -wigle json node formats a readable CoT to be passed to TAK node to turn into a XML CoT that TAK can understand.
 
 -TAK turns the json data to CoT and pushes it via TCP (TAKServer) or UDP depending on what is chosen.
+
+--------------------------------
+
+TROUBLESHOOTING / KNOWN ISSUES:
+
+-in the event the Node-Red service explodes and you lose connection to the Node-Red UI and cant reconnect, you may need to restart your Node-Red service
+
+$ sudo service node-red restart
