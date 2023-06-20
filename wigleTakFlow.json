@@ -1,6 +1,6 @@
 [
     {
-        "id": "f96133e571fcee05",
+        "id": "039de8c509054630",
         "type": "tab",
         "label": "wigleTakFlow",
         "disabled": false,
@@ -8,9 +8,9 @@
         "env": []
     },
     {
-        "id": "4fd2346c0e7a421f",
+        "id": "2f2a6e6e0ee881cc",
         "type": "http request",
-        "z": "f96133e571fcee05",
+        "z": "039de8c509054630",
         "name": "wigleWifi",
         "method": "GET",
         "ret": "obj",
@@ -27,23 +27,23 @@
                 "keyType": "Authorization",
                 "keyValue": "",
                 "valueType": "other",
-                "valueValue": "\"Basic QUlEOTBkMGQzNWZkYjNjMWFjZmZkM2ALEIS5vo0EQc1NDg6OWIwYjk02Fvpar7JKs91wOWI5Nzc3YzU5OTc=\""
+                "valueValue": "\"Basic Pq42D91A9QOTBkMGQzNWZkYjNjMWFjWpQ81VpaEwQ02VpDDg6OWIwYjk02Fvpar7J0Sp2ja4FpQcVoW31A03=\""
             }
         ],
-        "x": 800,
+        "x": 1100,
         "y": 300,
         "wires": [
             [
-                "0735594f72f72a48",
-                "09af81940d82308e"
+                "22f5a257871faf09",
+                "8a82ddb1d310185b"
             ]
         ]
     },
     {
-        "id": "0735594f72f72a48",
+        "id": "22f5a257871faf09",
         "type": "debug",
-        "z": "f96133e571fcee05",
-        "name": "debug http",
+        "z": "039de8c509054630",
+        "name": "debug http1",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -52,14 +52,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 990,
-        "y": 220,
+        "x": 1270,
+        "y": 200,
         "wires": []
     },
     {
-        "id": "05635197f882e7c2",
+        "id": "874afbc53414d974",
         "type": "tcp in",
-        "z": "f96133e571fcee05",
+        "z": "039de8c509054630",
         "name": "",
         "server": "client",
         "host": "10.237.104.20",
@@ -71,109 +71,56 @@
         "trim": false,
         "base64": false,
         "tls": "1c52b35895c06e7e",
-        "x": 260,
-        "y": 260,
-        "wires": [
-            [
-                "8bd37c6ee9e5b902"
-            ]
-        ]
-    },
-    {
-        "id": "8bd37c6ee9e5b902",
-        "type": "tak",
-        "z": "f96133e571fcee05",
-        "name": "TAK",
-        "x": 470,
+        "x": 300,
         "y": 240,
         "wires": [
             [
-                "bab69096a0ae680a",
-                "9370d6523579f647"
+                "3b883c904c42322a"
+            ]
+        ]
+    },
+    {
+        "id": "3b883c904c42322a",
+        "type": "tak",
+        "z": "039de8c509054630",
+        "name": "TAK",
+        "x": 630,
+        "y": 240,
+        "wires": [
+            [
+                "741b2943a3b63d8b",
+                "a2fb3759b1880994",
+                "ed766a5f88e0c60b"
             ],
             [],
             []
         ]
     },
     {
-        "id": "bab69096a0ae680a",
+        "id": "a2fb3759b1880994",
         "type": "function",
-        "z": "f96133e571fcee05",
-        "name": "filter",
-        "func": "if (msg.payload.event.detail.contact._attributes.callsign === \"Cellular\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n\n    msg.payload = {\n        \"lat1\": lat[0],\n        \"lat2\": lat[3],\n        \"lon1\": lon[0],\n        \"lon2\": lon[3],\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n};",
+        "z": "039de8c509054630",
+        "name": "filter data cellular",
+        "func": "var callsign = msg.payload.event.detail.contact._attributes.callsign;\nif (callsign === \"Cellular\" || callsign === \"CELLULAR\" || callsign === \"cellular\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n\n    msg.payload = {\n        \"lat1\": lat[0],\n        \"lat2\": lat[3],\n        \"lon1\": lon[0],\n        \"lon2\": lon[3],\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n} else {\n    return null;\n};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 610,
+        "x": 850,
         "y": 300,
         "wires": [
             [
-                "5b3a7d8a4429b72e",
-                "4fd2346c0e7a421f"
+                "8316e8d0c8bdf329",
+                "2f2a6e6e0ee881cc"
             ]
         ]
     },
     {
-        "id": "5b3a7d8a4429b72e",
+        "id": "8316e8d0c8bdf329",
         "type": "debug",
-        "z": "f96133e571fcee05",
-        "name": "debug filter",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 770,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "9370d6523579f647",
-        "type": "debug",
-        "z": "f96133e571fcee05",
-        "name": "debug cot",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 630,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "09af81940d82308e",
-        "type": "function",
-        "z": "f96133e571fcee05",
-        "name": "wigle json (towers)",
-        "func": "var newMsg;\nconst short = 10000;\nconst cinco = 5 * 60 * 1000;\nconst diez = 2 * cinco;\nconst stale = new Date(Date.now() + cinco).toISOString();\nconst length = parseInt(msg.payload.totalResults);\n\nfor (var i = 0; i < length; i++) {\n    var lat = String(msg.payload.results[i].trilat);\n    var lon = String(msg.payload.results[i].trilong);\n    var name = msg.payload.results[i].ssid;\n    var uuid = msg.payload.results[i].id;\n    var color = \"-65536\";\n    var number = msg.payload.results.length;\n \n\n    newMsg = {\n        \"payload\": {\n        \"event\": {\n            \"_attributes\": {\n                \"version\": \"2.0\",\n                \"uid\": \"\"+ uuid +\"\",\n                \"type\": \"b-m-p-c-ip\",\n                \"how\": \"h-g-i-g-o\",\n                \"time\": new Date(Date.now()).toISOString(),\n                \"start\": new Date(Date.now()).toISOString(),\n                \"stale\": stale,\n            },\n            \"point\": {\n                \"_attributes\": {\n                    \"lat\": \"\"+ lat +\"\",\n                    \"lon\": \"\"+ lon + \"\",\n                    \"hae\": \"0.0\",\n                    \"ce\": \"9999999.0\",\n                    \"le\": \"9999999.0\"\n                }\n            },\n            \"detail\": {\n                \"usericon\": {\n                    \"_attributes\": {\n                        \"iconsetpath\": \"COT_MAPPING_SPOTMAP/b-m-p-s-m/\"+ color +\"\",\n                    },\n                },\n                \"contact\": {\n                    \"_attributes\": {\n                    \"callsign\": \"\"+ name +\"\",\n                    }\n                },\n                \"color\": {\n                    \"_attributes\": {\n                    \"argb\": \"\"+ color +\"\",\n                    //\"test\": number,\n                    },\n                },\n            }\n        }\n    }\n    }\n    node.send(newMsg);\n}\n//return msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1030,
-        "y": 300,
-        "wires": [
-            [
-                "4104d76d59ebdcf3",
-                "6edc921697dcb13c"
-            ]
-        ]
-    },
-    {
-        "id": "4104d76d59ebdcf3",
-        "type": "debug",
-        "z": "f96133e571fcee05",
-        "name": "debug json",
+        "z": "039de8c509054630",
+        "name": "debug filter1",
         "active": false,
         "tosidebar": true,
         "console": false,
@@ -182,42 +129,76 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1230,
-        "y": 220,
+        "x": 1050,
+        "y": 200,
         "wires": []
     },
     {
-        "id": "8888c8c4ac9eda39",
+        "id": "741b2943a3b63d8b",
+        "type": "debug",
+        "z": "039de8c509054630",
+        "name": "debug cot",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "f6d29f64729af6de",
+        "type": "debug",
+        "z": "039de8c509054630",
+        "name": "debug json1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1530,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "b8271e7ce1d88dc1",
         "type": "comment",
-        "z": "f96133e571fcee05",
+        "z": "039de8c509054630",
         "name": "wigleTakFlow",
         "info": "",
-        "x": 330,
-        "y": 160,
+        "x": 410,
+        "y": 180,
         "wires": []
     },
     {
-        "id": "6edc921697dcb13c",
+        "id": "60c8901c9b15f387",
         "type": "tak",
-        "z": "f96133e571fcee05",
+        "z": "039de8c509054630",
         "name": "TAK",
-        "x": 1270,
+        "x": 1570,
         "y": 300,
         "wires": [
             [
-                "957623b21cf72be4",
-                "f779fc71401be740"
+                "e08477edbd5f97c7",
+                "a0bcdb61486af266"
             ],
             [],
             []
         ]
     },
     {
-        "id": "957623b21cf72be4",
+        "id": "e08477edbd5f97c7",
         "type": "debug",
-        "z": "f96133e571fcee05",
+        "z": "039de8c509054630",
         "name": "debug cot",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -225,14 +206,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1430,
-        "y": 220,
+        "x": 1730,
+        "y": 200,
         "wires": []
     },
     {
-        "id": "f779fc71401be740",
+        "id": "a0bcdb61486af266",
         "type": "udp out",
-        "z": "f96133e571fcee05",
+        "z": "039de8c509054630",
         "name": "",
         "addr": "239.2.3.1",
         "iface": "",
@@ -241,14 +222,14 @@
         "outport": "",
         "base64": false,
         "multicast": "multi",
-        "x": 1570,
+        "x": 1870,
         "y": 280,
         "wires": []
     },
     {
-        "id": "dc96e9d6a78c714c",
+        "id": "848ad892cd929acf",
         "type": "tcp out",
-        "z": "f96133e571fcee05",
+        "z": "039de8c509054630",
         "name": "",
         "host": "10.237.104.20",
         "port": "8089",
@@ -256,18 +237,161 @@
         "base64": false,
         "end": false,
         "tls": "1c52b35895c06e7e",
-        "x": 1590,
+        "x": 1890,
         "y": 340,
         "wires": []
     },
     {
-        "id": "7e9c91485a95865b",
+        "id": "786665e303d206f2",
         "type": "comment",
-        "z": "f96133e571fcee05",
+        "z": "039de8c509054630",
         "name": "add user:pass and authorization header",
         "info": "",
-        "x": 810,
-        "y": 360,
+        "x": 1090,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "8a82ddb1d310185b",
+        "type": "function",
+        "z": "039de8c509054630",
+        "name": "wigle json (towers)",
+        "func": "var newMsg;\nconst short = 10000;\nconst uno = 60 * 1000;\nconst cinco = 5 * 60 * 1000;\nconst diez = 2 * cinco;\nconst stale = new Date(Date.now() + uno).toISOString();\n\nfor (var i = 0; i < msg.payload.results.length; i++) {\n    var lat = String(msg.payload.results[i].trilat);\n    var lon = String(msg.payload.results[i].trilong);\n    var name = msg.payload.results[i].ssid;\n    var summary = msg.payload.results[i].attributes;\n    var callsign = name + \";\" + summary;\n    var uuid = msg.payload.results[i].id;\n    var color = \"-65281\" //purple\n\n    var ssid = \"SSID: \" + msg.payload.results[i].ssid;\n    var qos = \", QoS: \" + msg.payload.results[i].qos;\n    var firstSeen = \", First Seen: \" + msg.payload.results[i].firsttime;\n    var lastSeen = \", Last Seen: \" + msg.payload.results[i].firsttime;\n    var cellId = \", Cell ID: \" + msg.payload.results[i].id;\n    var channel = \", Channel: \" + msg.payload.results[i].channel;\n    var type = \", Type: \" + msg.payload.results[i].gentype;\n    var address = \", Address: \" + msg.payload.results[i].housenumber + \" \" + msg.payload.results[i].road + \", \" + msg.payload.results[i].city + \", \" + msg.payload.results[i].region + \", \" + msg.payload.results[i].postalcode;\n    var data = String(ssid + type + cellId + channel + qos + firstSeen + lastSeen + address);\n    newMsg = {\n        \"payload\": {\n        \"event\": {\n            \"_attributes\": {\n                \"version\": \"2.0\",\n                \"uid\": \"\"+ uuid +\"\",\n                \"type\": \"b-m-p-s-m\",\n                \"how\": \"h-g-i-g-o\",\n                \"time\": new Date(Date.now()).toISOString(),\n                \"start\": new Date(Date.now()).toISOString(),\n                \"stale\": stale,\n            },\n            \"point\": {\n                \"_attributes\": {\n                    \"lat\": \"\"+ lat +\"\",\n                    \"lon\": \"\"+ lon + \"\",\n                    \"hae\": \"0.0\",\n                    \"ce\": \"9999999.0\",\n                    \"le\": \"9999999.0\"\n                }\n            },\n            \"detail\": {\n                \"usericon\": {\n                    \"_attributes\": {\n                        \"iconsetpath\": \"COT_MAPPING_SPOTMAP/b-m-p-s-m/\"+ color +\"\",\n                    },\n                },\n                \"remarks\": {\n                    \"_text\": data,\n                },\n                \"contact\": {\n                    \"_attributes\": {\n                    \"callsign\": \"\"+ callsign +\"\",\n                    }\n                },\n                \"color\": {\n                    \"_attributes\": {\n                    \"argb\": \"\"+ color +\"\",\n                    },\n                },\n            }\n        }\n    }\n    }\n    node.send(newMsg);\n}\n//return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1330,
+        "y": 300,
+        "wires": [
+            [
+                "60c8901c9b15f387",
+                "f6d29f64729af6de"
+            ]
+        ]
+    },
+    {
+        "id": "ed766a5f88e0c60b",
+        "type": "function",
+        "z": "039de8c509054630",
+        "name": "filter data wifi",
+        "func": "var callsign = msg.payload.event.detail.contact._attributes.callsign;\nif (callsign === \"wifi\" || callsign === \"WIFI\" || callsign === \"Wifi\" || callsign === \"WiFi\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    //config parameters if needed\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n    var freenet = \"false\"; //only include wifi known free to public?\n\n    msg.payload = {\n        \"lat1\": lat[0],\n        \"lat2\": lat[3],\n        \"lon1\": lon[0],\n        \"lon2\": lon[3],\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n} else {\n    return null;\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 380,
+        "wires": [
+            [
+                "a943f211596333a9",
+                "abae6a374448a3c6"
+            ]
+        ]
+    },
+    {
+        "id": "a943f211596333a9",
+        "type": "http request",
+        "z": "039de8c509054630",
+        "name": "wigleWifi",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.wigle.net/api/v2/network/search?onlymine=false&notmine=true&latrange1={{{payload.lat1}}}&latrange2={{{payload.lat2}}}&longrange1={{{payload.lon1}}}&longrange2={{{payload.lon2}}}&startTransID={{{payload.earliest}}}&encryption=None&freenet={{{payload.freenet}}}&paynet=false&variance={{{payload.variance}}}&resultsPerPage={{{payload.results}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "basic",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "Authorization",
+                "keyValue": "",
+                "valueType": "other",
+                "valueValue": "\"Basic QUlEOTBkMGQzNWZkiD9aW30FlPqwAC7vo0EQc1NDg6OWIwYjk02FvpF7rGy51nD0AO3sQ9U5OTc=\""
+            }
+        ],
+        "x": 1100,
+        "y": 380,
+        "wires": [
+            [
+                "63cf75369e67b6cc",
+                "919d7ccb16866592"
+            ]
+        ]
+    },
+    {
+        "id": "63cf75369e67b6cc",
+        "type": "debug",
+        "z": "039de8c509054630",
+        "name": "debug http2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1270,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "919d7ccb16866592",
+        "type": "function",
+        "z": "039de8c509054630",
+        "name": "wigle json (APs)",
+        "func": "var newMsg;\nconst short = 10000;\nconst uno = 60 * 1000;\nconst cinco = 5 * 60 * 1000;\nconst diez = 2 * cinco;\nconst stale = new Date(Date.now() + uno).toISOString();\n\nfor (var i = 0; i < msg.payload.results.length; i++) {\n    var lat = String(msg.payload.results[i].trilat);\n    var lon = String(msg.payload.results[i].trilong);\n    var name = msg.payload.results[i].ssid;\n    var uuid = msg.payload.results[i].netid;\n    var color = \"-16776961\" //blue\n    var ssid = \"SSID: \" + msg.payload.results[i].ssid;\n    var qos = \", QoS: \" + msg.payload.results[i].qos;\n    var firstSeen = \", First Seen: \" + msg.payload.results[i].firsttime;\n    var lastSeen = \", Last Seen: \" + msg.payload.results[i].firsttime;\n    var mac = \", MAC: \" + msg.payload.results[i].netid;\n    var type = \", Type: \" + msg.payload.results[i].type;\n    var encryption = \", Encryption: \" + msg.payload.results[i].encryption;\n    var address = \", Address: \" + msg.payload.results[i].housenumber + \" \" + msg.payload.results[i].road + \", \" + msg.payload.results[i].city + \", \" + msg.payload.results[i].region + \", \" + msg.payload.results[i].postalcode;\n    var data = String(ssid + mac + type + encryption + qos + firstSeen + lastSeen + address);\n\n    newMsg = {\n        \"payload\": {\n        \"event\": {\n            \"_attributes\": {\n                \"version\": \"2.0\",\n                \"uid\": \"\"+ uuid +\"\",\n                \"type\": \"b-m-p-s-m\",\n                \"how\": \"h-g-i-g-o\",\n                \"time\": new Date(Date.now()).toISOString(),\n                \"start\": new Date(Date.now()).toISOString(),\n                \"stale\": stale,\n            },\n            \"point\": {\n                \"_attributes\": {\n                    \"lat\": \"\"+ lat +\"\",\n                    \"lon\": \"\"+ lon + \"\",\n                    \"hae\": \"0.0\",\n                    \"ce\": \"9999999.0\",\n                    \"le\": \"9999999.0\"\n                }\n            },\n            \"detail\": {\n                \"usericon\": {\n                    \"_attributes\": {\n                        \"iconsetpath\": \"COT_MAPPING_SPOTMAP/b-m-p-s-m/\"+ color +\"\",\n                    },\n                },\n                \"remarks\": {\n                    \"_text\": data,\n                },\n                \"contact\": {\n                    \"_attributes\": {\n                    \"callsign\": \"\"+ name +\"\",\n                    }\n                },\n                \"color\": {\n                    \"_attributes\": {\n                    \"argb\": \"\"+ color +\"\",\n                    },\n                },\n            }\n        }\n    }\n    }\n    node.send(newMsg);\n}\n//return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 380,
+        "wires": [
+            [
+                "60c8901c9b15f387",
+                "5fd339d4e9fac863"
+            ]
+        ]
+    },
+    {
+        "id": "abae6a374448a3c6",
+        "type": "debug",
+        "z": "039de8c509054630",
+        "name": "debug filter2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "5fd339d4e9fac863",
+        "type": "debug",
+        "z": "039de8c509054630",
+        "name": "debug json2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1510,
+        "y": 480,
         "wires": []
     },
     {
