@@ -22,6 +22,8 @@ SETUP NODE-RED:
 
 -options include installing node-red on your local PC, a Raspberry Pi or similar single board computer or mini PC, deploying node-red on a cloud server or virtual private server (VPS), Docker Container, or local virtual environment. After installing node-red you should be able to go to the node-red dashboard at http://*nodeRedIPaddress:1880 you may have to open appropriate ports (1880) to allow devices to access the node-red dashboard.
 
+-ensure you install the "node-red-contrib-tak" node. If not there should be a prompt when you import wigleTakFlow in Node-Red that there are nodes that need to be installed and will automatically install them for you if you allow. In the event that isnt the case, in Node-Red: Menu (3 horizontal lines) > Manage palette > Install > Search "node-red-contrib-tak" > Install > Install
+
 ------------------------------
 
 IMPORT .JSON FLOW TO NODE RED:
