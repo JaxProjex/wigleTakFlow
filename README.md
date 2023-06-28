@@ -3,6 +3,14 @@ Node-Red Flow to forward cellular coverage or open WiFi APs from WiGLEs database
 
 ![flow](/wigleTakFlow.png?raw=true "Node Red Flow")
 
+![itak](/itak1.PNG?raw=true "itak")
+
+![itak](/itak2.PNG?raw=true "itak")
+
+![atak](/atak1.jpg?raw=true "atak")
+
+![atak](/atak2.jpg?raw=true "atak")
+
 
 REQUIREMENTS:
 
@@ -67,14 +75,6 @@ USING THE WIGLETAKFLOW:
 -in ATAK: Menu (3 horizontal lines) > Drawing Tools > *choose square > *tap your 3 points to create your box > *select center CoT marker of your box (default name is Rectangle 1) > *click bottom right waypoint/menu icon in radial menu > change shape name to: Cellular (to get cellular coverage) or change shape name to: Wifi (to get open WiFi APs) > Send > Broadcast > cellular or wifi data will return as CoT icons inside your square. In the remarks section of each CoT returned will be additional data on the cell tower or wifi AP.
 
 -in iTAK: Draw > *select polygon (the not circle shape) > select > *create a square around your area of interest > *change name to: Cellular (to get cellular coverage) or change shape name to: Wifi (to get open WiFi APs) > Share > Share with Contacts > Share With All >cellular or wifi data will return as CoT icons inside your square. In the remarks section of each CoT returned will be additional data on the cell tower or wifi AP.
-
-![itak](/itak1.PNG?raw=true "itak")
-
-![itak](/itak2.PNG?raw=true "itak")
-
-![atak](/atak1.jpg?raw=true "atak")
-
-![atak](/atak2.jpg?raw=true "atak")
 
 -------------------------------
 
