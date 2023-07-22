@@ -27,7 +27,7 @@
                 "keyType": "Authorization",
                 "keyValue": "",
                 "valueType": "other",
-                "valueValue": "\"Basic QUlEOTBkMGQzNWZkYjNjMWa3msSw91Dso3Q2paQpd39z82VEqWzvpar7JKs91wOWI5Nzc3YzU5OTc=\""
+                "valueValue": "\"Basic QUllEABR6UODVP7wm4FGs4VB6o1XAPdW3VBsZ7Nzc3YzU5OTc=\""
             }
         ],
         "x": 1360,
@@ -44,7 +44,7 @@
         "type": "debug",
         "z": "039de8c509054630",
         "name": "debug http1",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -74,7 +74,9 @@
         "x": 340,
         "y": 240,
         "wires": [
-            []
+            [
+                "3b883c904c42322a"
+            ]
         ]
     },
     {
@@ -88,11 +90,11 @@
             [
                 "a2fb3759b1880994",
                 "ed766a5f88e0c60b",
-                "d74c0b5a4ee274b2",
                 "6f817d83c48a1c6d",
-                "1b01bd44f60505e7",
                 "32c3e7b31e5f9c54",
-                "2a51209568c61a36"
+                "2a51209568c61a36",
+                "d74c0b5a4ee274b2",
+                "1b01bd44f60505e7"
             ],
             [],
             []
@@ -103,7 +105,7 @@
         "type": "function",
         "z": "039de8c509054630",
         "name": "filter data cellular",
-        "func": "var callsign = msg.payload.event.detail.contact._attributes.callsign;\nvar xml = msg.payload.cotEvent.detail.xmlDetail;\nif (callsign === \"Cellular\" || callsign === \"CELLULAR\" || callsign === \"cellular\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n\n    msg.payload = {\n        \"lat1\": String(parseFloat(lat[0])),\n        \"lat2\": String(parseFloat(lat[3])),\n        \"lon1\": String(parseFloat(lon[0])),\n        \"lon2\": String(parseFloat(lon[3])),\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n} else {\n    return null;\n};",
+        "func": "var callsign = msg.payload.event.detail.contact._attributes.callsign;\nif (callsign === \"Cellular\" || callsign === \"CELLULAR\" || callsign === \"cellular\") {\n    var coord1 = msg.payload.event.detail.link[0]._attributes.point.split(\",\");\n    var coord2 = msg.payload.event.detail.link[1]._attributes.point.split(\",\");\n    var coord3 = msg.payload.event.detail.link[2]._attributes.point.split(\",\");\n    var coord4 = msg.payload.event.detail.link[3]._attributes.point.split(\",\");\n    var lat = [coord1[0], coord2[0], coord3[0], coord4[0]];\n    var lon = [coord1[1], coord2[1], coord3[1], coord4[1]];\n    lat.sort(function(a,b){\n        return a - b;\n    });\n    lon.sort(function (a, b) {\n        return a - b;\n    });\n\n    var results = 50;\n    var variance = 0.001;\n    var earliest = \"20230101-00000\";\n\n    msg.payload = {\n        \"lat1\": String(parseFloat(lat[0])),\n        \"lat2\": String(parseFloat(lat[3])),\n        \"lon1\": String(parseFloat(lon[0])),\n        \"lon2\": String(parseFloat(lon[3])),\n        \"results\": results,\n        \"variance\": variance,\n        \"earliest\": earliest\n    };\n    node.send(msg);\n} else {\n    return null;\n};",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -123,7 +125,7 @@
         "type": "debug",
         "z": "039de8c509054630",
         "name": "debug filter1",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -140,7 +142,7 @@
         "type": "debug",
         "z": "039de8c509054630",
         "name": "debug json1",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -167,12 +169,12 @@
         "type": "tak",
         "z": "039de8c509054630",
         "name": "TAK",
-        "x": 1770,
+        "x": 1750,
         "y": 300,
         "wires": [
             [
                 "e08477edbd5f97c7",
-                "a0bcdb61486af266"
+                "848ad892cd929acf"
             ],
             [],
             []
@@ -296,7 +298,7 @@
                 "keyType": "Authorization",
                 "keyValue": "",
                 "valueType": "other",
-                "valueValue": "\"Basic QUlEOTBkMGQzNWZkYjNjMWFjZs82DAa82Ssk91wOWI5Nzc3YzU5OTc=\""
+                "valueValue": "\"Basic QUlEABR6UODVP7wm4FGs4VB6o1XAPdW3VBsZ7Nzc3YzU5OTc=\""
             }
         ],
         "x": 1360,
@@ -430,9 +432,7 @@
         "x": 340,
         "y": 360,
         "wires": [
-            [
-                "3b883c904c42322a"
-            ]
+            []
         ]
     },
     {
